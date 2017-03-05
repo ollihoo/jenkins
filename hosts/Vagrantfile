@@ -1,15 +1,18 @@
 # -*- mode: ruby -*-
 Vagrant.configure("2") do |config|
-
   config.vm.box = "bento/centos-7.2"
 
   config.vm.define "jenkins" do |machine|
     machine.vm.network "private_network", ip: "172.17.177.21"
+    machine.vm.network "forwarded_port", guest: 8080, host: 10080
+    machine.vm.synced_folder "data/jenkins", "/var/lib/jenkins", owner: 'jenkins'
   end
 
-#  config.vm.define "node2" do |machine|
-#    machine.vm.network "private_network", ip: "172.17.177.22"
-#  end
+  config.vm.define "postgres" do |machine|
+    machine.vm.network "private_network", ip: "172.17.177.22"
+    machine.vm.network "forwarded_port", guest: 5431, host: 15432
+    machine.vm.synced_folder "data/postgres", "/var/lib/jenkins"
+  end
 
   config.vm.define 'controller' do |machine|
     machine.vm.network "private_network", ip: "172.17.177.11"
