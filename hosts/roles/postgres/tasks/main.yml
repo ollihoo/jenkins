@@ -1,0 +1,39 @@
+- name: add jenkins repository
+  yum_repository:
+    name: jenkins
+    description: YUM repository for Jenkins
+    baseurl: http://pkg.jenkins.io/redhat
+    gpgcheck: yes
+    gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
+
+- name: install postgresql
+  yum:
+    name: postgresql-server
+    state: latest
+
+- name: execute initdb as postgres user
+  shell: su -c initdb - postgres
+  args:
+    creates: /var/lib/pgsql/data
+
+- name: copy file to its destination
+  copy:
+    src: postgresql.conf
+    dest: /var/lib/pgsql/data
+    owner: postgres
+    group: postgres
+    mode: "u=rw,g=r,o=r"
+
+- name: copy file to its destination
+  copy:
+    src: pg_hba.conf
+    dest: /var/lib/pgsql/data
+    owner: postgres
+    group: postgres
+    mode: "u=rw,g=r,o=r"
+
+- name: activate and start postgresql
+  systemd:
+    name: postgresql
+    state: started
+    enabled: yes

@@ -11,17 +11,17 @@ Vagrant.configure("2") do |config|
   config.vm.define "postgres" do |machine|
     machine.vm.network "private_network", ip: "172.17.177.22"
     machine.vm.network "forwarded_port", guest: 5431, host: 15432
-    machine.vm.synced_folder "data/postgres", "/var/lib/jenkins"
+    machine.vm.synced_folder "data/postgres", "/var/lib/postgres"
   end
 
   config.vm.define 'controller' do |machine|
     machine.vm.network "private_network", ip: "172.17.177.11"
 
     machine.vm.provision :ansible_local do |ansible|
-      ansible.playbook       = "jenkins-playbook.yml"
+      ansible.playbook       = "playbook.yml"
       ansible.verbose        = true
       ansible.install        = true
-      ansible.limit          = "jenkins" # or only "nodes" group, etc.
+      ansible.limit          = "all" # or only "nodes" group, etc.
       ansible.inventory_path = "instances.txt"
     end
   end

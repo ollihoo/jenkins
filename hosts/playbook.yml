@@ -5,3 +5,8 @@
   roles:
   - jenkins
 
+- hosts: postgres
+  remote_user: vagrant
+  become: yes
+  roles:
+  - postgres
