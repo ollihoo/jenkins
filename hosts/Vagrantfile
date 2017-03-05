@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/centos-7.2"
+
+  config.vm.define "jenkins" do |machine|
+    machine.vm.network "private_network", ip: "172.17.177.21"
+  end
+
+#  config.vm.define "node2" do |machine|
+#    machine.vm.network "private_network", ip: "172.17.177.22"
+#  end
+
+  config.vm.define 'controller' do |machine|
+    machine.vm.network "private_network", ip: "172.17.177.11"
+
+    machine.vm.provision :ansible_local do |ansible|
+      ansible.playbook       = "jenkins-playbook.yml"
+      ansible.verbose        = true
+      ansible.install        = true
+      ansible.limit          = "jenkins" # or only "nodes" group, etc.
+      ansible.inventory_path = "instances.txt"
+    end
+  end
+
+end
