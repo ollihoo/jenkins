@@ -1,4 +1,4 @@
 create table PERSON (
-    ID int not null,
+    ID BIGSERIAL PRIMARY KEY,
     NAME varchar(100) not null
 );
