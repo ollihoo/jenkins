@@ -10,8 +10,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "postgres" do |machine|
     machine.vm.network "private_network", ip: "172.17.177.22"
-    machine.vm.network "forwarded_port", guest: 5431, host: 15432
-    machine.vm.synced_folder "data/postgres", "/var/lib/postgres"
+    machine.vm.network "forwarded_port", guest: 5432, host: 15432
+#    machine.vm.synced_folder "data/postgres", "/var/lib/pgsql", owner: 'postgres', group: 'postgres'
   end
 
   config.vm.define 'controller' do |machine|

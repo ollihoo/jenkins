@@ -11,10 +11,15 @@
     name: postgresql-server
     state: latest
 
+- name: install python-psycopg2
+  yum:
+    name: python-psycopg2
+    state: latest
+
 - name: execute initdb as postgres user
-  shell: su -c initdb - postgres
+  shell: postgresql-setup initdb
   args:
-    creates: /var/lib/pgsql/data
+    creates: /var/lib/pgsql/data/
 
 - name: copy file to its destination
   copy:
@@ -37,3 +42,12 @@
     name: postgresql
     state: started
     enabled: yes
+
+- postgresql_db:
+    name: foobar
+
+- postgresql_user:
+    db: foobar
+    name: django
+    password: secret2345
+    priv: "ALL"
