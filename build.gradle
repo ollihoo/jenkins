@@ -23,7 +23,7 @@ dependencies {
 }
 
 flyway {
-    url = 'jdbc:postgresql://172.17.177.22:15432/foobar'
+    url = 'jdbc:postgresql://172.17.177.22:5432/foobar'
     user = 'django'
     password = 'secret2345'
 }
