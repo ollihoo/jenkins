@@ -9,6 +9,7 @@ plugins {
 }
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 
 repositories {
     mavenCentral()
@@ -20,6 +21,8 @@ dependencies {
     compile 'org.flywaydb:flyway-parent:4.1.2'
     compile 'org.flywaydb:flyway-gradle-plugin:4.1.2'
     compile 'org.postgresql:postgresql:42.0.0.jre7'
+    compile 'org.codehaus.groovy:groovy:2.4.9'
+    compile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
 }
 
 flyway {
