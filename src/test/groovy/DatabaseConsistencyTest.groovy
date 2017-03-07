@@ -3,6 +3,7 @@ import spock.lang.Specification
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
+import java.sql.ResultSetMetaData
 import java.sql.Statement
 
 class DatabaseConsistencyTest extends Specification {
@@ -37,15 +38,25 @@ class DatabaseConsistencyTest extends Specification {
         result.contains("Helmut Schmidt")
     }
 
-
     def "Database contains correct number of entries" () {
         when:
         ResultSet resultSet = STATEMENT.executeQuery("SELECT count(*) as entries FROM person");
         resultSet.next()
-        def actualNumberOfEntries = resultSet.getInt("entries")
+        def actualNumberOfPersons = resultSet.getInt("entries")
 
         then:
-        actualNumberOfEntries == 4
+        actualNumberOfPersons == 4
+    }
+
+    def "Table person contains expected number of columns and column names" () {
+        when:
+        ResultSet resultSet = STATEMENT.executeQuery("SELECT * FROM person LIMIT 1");
+        ResultSetMetaData resultSetMetaData = resultSet.getMetaData()
+
+        then:
+        resultSetMetaData.getColumnCount() == 2
+        resultSetMetaData.getColumnName(1) == "id"
+        resultSetMetaData.getColumnName(2) == "name"
     }
 
 
