@@ -6,6 +6,13 @@
     gpgcheck: yes
     gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
 
+- name: add EPEL repository
+  yum_repository:
+    name: epel
+    description: YUM repository for EPEL
+    baseurl: https://dl.fedoraproject.org/pub/epel/7/x86_64/
+    gpgcheck: no
+
 - name: install java dependency
   yum:
     name: java-1.8.0-openjdk
@@ -14,6 +21,11 @@
 - name: install git
   yum:
     name: git
+    state: latest
+
+- name: install ansible
+  yum:
+    name: ansible
     state: latest
 
 - name: install jenkins server
@@ -34,7 +46,6 @@
       group: jenkins
       state: directory
       mode: "u+rw,g-rwx,o-rwx"
-
 
 - name: copy keys in to .ssh directory
   copy:
