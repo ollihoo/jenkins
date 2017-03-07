@@ -3,10 +3,12 @@
   remote_user: vagrant
   become: yes
   roles:
+  - basicsetup
   - jenkins
 
 - hosts: postgres
   remote_user: vagrant
   become: yes
   roles:
+  - basicsetup
   - postgres
