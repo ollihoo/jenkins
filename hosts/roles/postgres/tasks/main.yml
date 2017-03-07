@@ -1,17 +1,9 @@
-- name: add jenkins repository
-  yum_repository:
-    name: jenkins
-    description: YUM repository for Jenkins
-    baseurl: http://pkg.jenkins.io/redhat
-    gpgcheck: yes
-    gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
-
 - name: install postgresql
   yum:
     name: postgresql-server
     state: latest
 
-- name: install python-psycopg2
+- name: install python-psycopg2 as dependency for ansible
   yum:
     name: python-psycopg2
     state: latest
@@ -21,7 +13,7 @@
   args:
     creates: /var/lib/pgsql/data/
 
-- name: copy file to its destination
+- name: copy postgres configuration to its destination
   copy:
     src: postgresql.conf
     dest: /var/lib/pgsql/data
@@ -29,7 +21,7 @@
     group: postgres
     mode: "u=rw,g=r,o=r"
 
-- name: copy file to its destination
+- name: copy access rules to its destination
   copy:
     src: pg_hba.conf
     dest: /var/lib/pgsql/data
@@ -43,10 +35,12 @@
     state: started
     enabled: yes
 
-- postgresql_db:
+- name: create foobar table
+  postgresql_db:
     name: foobar
 
-- postgresql_user:
+- name: create user django
+  postgresql_user:
     db: foobar
     name: django
     password: secret2345
