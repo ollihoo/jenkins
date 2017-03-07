@@ -1,3 +1,22 @@
+- name: create .ssh directory for Jenkins
+  file:
+      path: '/var/lib/jenkins/.ssh'
+      owner: jenkins
+      group: jenkins
+      state: directory
+      mode: "u+rw,g-rwx,o-rwx"
+
+- name: copy keys in to .ssh directory
+  copy:
+      src: '{{ item }}'
+      dest: '/var/lib/jenkins/.ssh/'
+      owner: jenkins
+      group: jenkins
+      mode: "u+rw,g-rwx,o-rwx"
+  with_items:
+  - id_rsa
+  - id_rsa.pub
+
 - name: add jenkins repository
   yum_repository:
     name: jenkins
@@ -5,13 +24,6 @@
     baseurl: http://pkg.jenkins.io/redhat
     gpgcheck: yes
     gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
-
-- name: add EPEL repository
-  yum_repository:
-    name: epel
-    description: YUM repository for EPEL
-    baseurl: https://dl.fedoraproject.org/pub/epel/7/x86_64/
-    gpgcheck: no
 
 - name: install java dependency
   yum:
@@ -38,22 +50,3 @@
     name: jenkins
     state: started
     enabled: yes
-
-- name: create .ssh directory for Jenkins
-  file:
-      path: '/var/lib/jenkins/.ssh'
-      owner: jenkins
-      group: jenkins
-      state: directory
-      mode: "u+rw,g-rwx,o-rwx"
-
-- name: copy keys in to .ssh directory
-  copy:
-      src: '{{ item }}'
-      dest: '/var/lib/jenkins/.ssh/'
-      owner: jenkins
-      group: jenkins
-      mode: "u+rw,g-rwx,o-rwx"
-  with_items:
-  - id_rsa
-  - id_rsa.pub
