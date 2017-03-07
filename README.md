@@ -10,4 +10,7 @@ It works with virtualized hosts running on a virtualbox. It has three servers:
 
 ## How to start
 
-* start script 
+* start script `generate_key_for_jenkins.sh`
+* do `cd hosts`
+* do `vagrant up --provision` and wait for setup
+
