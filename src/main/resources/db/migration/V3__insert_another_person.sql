@@ -1,0 +1,1 @@
+INSERT into person (name) values ('Olaf Scholz');

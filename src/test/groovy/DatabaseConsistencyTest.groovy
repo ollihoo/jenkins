@@ -45,7 +45,7 @@ class DatabaseConsistencyTest extends Specification {
         def actualNumberOfPersons = resultSet.getInt("entries")
 
         then:
-        actualNumberOfPersons == 4
+        actualNumberOfPersons == 5
     }
 
     def "Table person contains expected number of columns and column names" () {
